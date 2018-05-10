@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Newtonsoft.Json.Linq;
 using RestSharp;
+using static Cecs475.Scheduling.RegistrationApp.RegistrationViewModel;
 
 namespace Cecs475.Scheduling.RegistrationApp {
 	/// <summary>
@@ -24,7 +25,34 @@ namespace Cecs475.Scheduling.RegistrationApp {
 			InitializeComponent();
 		}
 
-		public RegistrationViewModel ViewModel => 
+
+        async void OnLoad(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ApiUrl = "http://localhost:51735/";
+            var client = new RestClient(ViewModel.ApiUrl);
+            var request = new RestRequest("api/schedule/terms", Method.GET);
+            var response = await client.ExecuteTaskAsync(request);
+
+            JArray obj = JArray.Parse(response.Content);
+            
+            foreach (var item in obj)
+            {
+                var dto = new SemesterTermDto
+                {
+                    Id = (int)item["Id"],
+                    Name = (string)item["Name"]
+                };
+                ViewModel.SemesterTerm.Add(dto);
+            }
+        }
+
+        private async void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            MessageBox.Show("Changed");
+        }
+
+        public RegistrationViewModel ViewModel => 
 			FindResource("ViewModel") as RegistrationViewModel;
 
 		private void mValidateBtn_Click(object sender, RoutedEventArgs e) {
