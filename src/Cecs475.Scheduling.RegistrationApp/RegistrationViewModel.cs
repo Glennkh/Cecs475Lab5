@@ -14,16 +14,16 @@ namespace Cecs475.Scheduling.RegistrationApp
         {
             public int Id { get; set; }
             public int SemesterTermId { get; set; }
-            public Catalogcourse CatalogCourse { get; set; }
+            public CatalogcourseDto CatalogCourse { get; set; }
             public int SectionNumber { get; set; }
 
             override public String ToString()
             {
-                return CatalogCourse.DepartmentName + " " + CatalogCourse.CourseNumber + "-" + SectionNumber;
+                return CatalogCourse.DepartmentName + " " + CatalogCourse.CourseNumber + "-" + SectionNumber.ToString();
             }
         }
 
-        public class Catalogcourse
+        public class CatalogcourseDto
         {
             public int Id { get; set; }
             public string DepartmentName { get; set; }
